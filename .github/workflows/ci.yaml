@@ -65,14 +65,15 @@ jobs:
 
       # Run tests
       - name: Run Maven Tests
-        run: mvn test
+        run: mvn clean test allure:report --file pom.xml
 
       # Generate Allure report
       - name: Generate Allure report
         run: mvn allure:report
 
-      - name: Upload Allure report artifact
+      - name: Upload Allure  Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: target/site/allure-maven-plugin
+          path: target/site/allure-maven-plugin/
