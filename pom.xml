@@ -161,17 +161,11 @@
                 <version>2.11.2</version>
                 <configuration>
                     <reportVersion>2.34.0</reportVersion>
-                    <allureDownloadUrl>
-                        https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.34.0/allure-commandline-2.34.0.zip
-                    </allureDownloadUrl>
+                    <!-- Where Allure looks for raw results -->
+                    <resultsDirectory>target/allure-results</resultsDirectory>
+                    <!-- Where the report will be generated -->
+                    <reportDirectory>target/allure-report</reportDirectory>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
