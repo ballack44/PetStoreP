@@ -161,10 +161,6 @@
                 <version>2.15.2</version>
                 <configuration>
                     <reportVersion>2.34.0</reportVersion>
-                    <!-- Where Allure looks for raw results -->
-                    <resultsDirectory>allure-results</resultsDirectory>
-                    <!-- Where the report will be generated -->
-                    <reportDirectory>allure-report</reportDirectory>
                 </configuration>
             </plugin>
 
