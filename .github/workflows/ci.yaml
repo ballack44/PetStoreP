@@ -65,7 +65,7 @@ jobs:
 
       # Run tests
       - name: Run tests and generate Allure report
-        run: mvn clean test allure:generate
+        run: mvn clean test allure:report
 
       - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
