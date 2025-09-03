@@ -160,7 +160,10 @@
                 <artifactId>allure-maven</artifactId>
                 <version>2.11.2</version>
                 <configuration>
-                    <reportVersion>2.21.0</reportVersion>
+                    <reportVersion>2.34.0</reportVersion>
+                    <allureDownloadUrl>
+                        https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.34.0/allure-commandline-2.34.0.zip
+                    </allureDownloadUrl>
                 </configuration>
                 <executions>
                     <execution>
