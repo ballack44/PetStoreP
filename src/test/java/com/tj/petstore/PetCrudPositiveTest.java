@@ -1,10 +1,9 @@
 package com.tj.petstore;
 
-import com.tj.petstore.dto.Category;
 import com.tj.petstore.dto.Pet;
-import com.tj.petstore.dto.Tag;
 import com.tj.petstore.util.Endpoints;
 import com.tj.petstore.util.SimpleRetry;
+import com.tj.petstore.util.TestObjectFactory;
 import com.tj.petstore.util.Utility;
 import io.qameta.allure.*;
 import io.qameta.allure.restassured.AllureRestAssured;
@@ -16,20 +15,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.Collections;
-
-
 import static io.restassured.RestAssured.given;
-import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.*;
 
+/**
+ * Positive CRUD flow for PetStore API.
+ * Covers: create, get, update, and delete operations for a pet resource.
+ */
 @Slf4j
 @Epic("PetStore API Tests")
 @Feature("Pet CRUD Operations")
 public class PetCrudPositiveTest extends Endpoints {
     
     private static String createdPetId;
-    public static final String DUMMY_IMAGE = "src/image/dummy.png";
 
     @BeforeClass
     public static void setup() {
@@ -40,19 +38,18 @@ public class PetCrudPositiveTest extends Endpoints {
         );
     }
 
-    @Test(priority = 1, description = "Create a new pet", retryAnalyzer = SimpleRetry.class)
+    @Test(
+            priority = 1,
+            description = "Create a new pet and verify the response matches the sent data.",
+            retryAnalyzer = SimpleRetry.class
+    )
     @Severity(SeverityLevel.CRITICAL)
-    @Feature("Create Pet")
     @Story("Create Pet")
-    @Description("This test verifies pet creation")
+    @Description("Creates a new pet in the system with status 'available'. "
+            + "Verifies that the response contains the correct id, name, and status. "
+            + "Logs the created pet and its id.")
     public void testCreatePet() {
-        Pet pet = new Pet();
-        pet.setId(Utility.generateId());// unique id
-        pet.setName("Rex");
-        pet.setStatus("available");
-        pet.setCategory(new Category(1, "Dogs"));
-        pet.setPhotoUrls(Collections.singletonList(DUMMY_IMAGE));
-        pet.setTags(Collections.singletonList(new Tag(1, "friendly")));
+        Pet pet = TestObjectFactory.basicPet(Utility.generateId(), "Rex");
 
         createdPetId = String.valueOf(pet.getId());
         log.info("Create a pet with the following ID: {}", createdPetId);
@@ -92,10 +89,15 @@ public class PetCrudPositiveTest extends Endpoints {
          */
     }
 
-    @Test(priority = 2, description = "Get the created pet", retryAnalyzer = SimpleRetry.class)
+    @Test(
+            priority = 2,
+            description = "Retrieve the newly created pet and ensure its data is correct.",
+            retryAnalyzer = SimpleRetry.class
+    )
     @Severity(SeverityLevel.NORMAL)
     @Story("Get Pet")
-    @Description("This test verifies GET created pet")
+    @Description("Fetches the pet created in the previous test using its id. "
+            + "Verifies the retrieved pet's id, name, and status match the expected values.")
     public void testGetPet() {
         log.info("Get the created pet");
 
@@ -112,20 +114,19 @@ public class PetCrudPositiveTest extends Endpoints {
     }
 
 
-    @Test(priority = 3, description = "Update the pet information", retryAnalyzer = SimpleRetry.class)
+    @Test(
+            priority = 3,
+            description = "Update the pet's information and verify the update.",
+            retryAnalyzer = SimpleRetry.class
+    )
     @Severity(SeverityLevel.CRITICAL)
     @Story("Update Pet")
-    @Description("This test verifies UPDATE of a pet")
+    @Description("Updates the created pet with new name, category, tag, and status. "
+            + "Verifies that the response reflects the updated values.")
     public void testUpdatePet() {
         log.info("Update the pet");
 
-        Pet updatedPet = new Pet();
-        updatedPet.setId(Integer.parseInt(createdPetId));
-        updatedPet.setName("RexUpdated");
-        updatedPet.setStatus("sold");
-        updatedPet.setCategory(new Category(2, "GuardDogs"));
-        updatedPet.setPhotoUrls(Collections.singletonList(DUMMY_IMAGE));
-        updatedPet.setTags(Collections.singletonList(new Tag(2, "trained")));
+        Pet updatedPet = TestObjectFactory.updatedPet(Integer.parseInt(createdPetId), "RexUpdated");
 
         given()
                 .relaxedHTTPSValidation()
@@ -143,10 +144,15 @@ public class PetCrudPositiveTest extends Endpoints {
                 .body("tags[0].id", notNullValue());
     }
 
-    @Test(priority = 4, description = "Get the updated pet", retryAnalyzer = SimpleRetry.class)
+    @Test(
+            priority = 4,
+            description = "Retrieve the updated pet and check for updated values.",
+            retryAnalyzer = SimpleRetry.class
+    )
     @Severity(SeverityLevel.NORMAL)
     @Story("Get Updated Pet")
-    @Description("This test verifies GET updated pet")
+    @Description("Fetches the pet after update by its id. "
+            + "Verifies the pet's id, name, and status reflect the updated values.")
     public void testGetUpdatedPet() {
         given()
                 .relaxedHTTPSValidation()
@@ -160,10 +166,15 @@ public class PetCrudPositiveTest extends Endpoints {
                 .body("status", equalTo("sold"));
     }
 
-    @Test(priority = 5, description = "Delete the pet", retryAnalyzer = SimpleRetry.class)
+    @Test(
+            priority = 5,
+            description = "Delete the pet and check that the deletion is successful.",
+            retryAnalyzer = SimpleRetry.class
+    )
     @Severity(SeverityLevel.CRITICAL)
     @Story("Delete Pet")
-    @Description("This test verifies deletion of a pet")
+    @Description("Deletes the created pet by its id. "
+            + "Verifies that the API returns status 200 and the response message matches the id of the deleted pet.")
     public void testDeletePet() {
         log.info("Delete the created pet");
         given()
