@@ -1,5 +1,8 @@
 name: Java CI with Maven
 
+permissions:
+  contents: write    # allow actions to push commits & tags
+
 # Trigger workflow on push or pull request to main
 on:
   workflow_dispatch:
