@@ -64,16 +64,11 @@ jobs:
             ${{ runner.os }}-maven-
 
       # Run tests
-      - name: Run Maven Tests
-        run: mvn clean test allure:report --file pom.xml
+      - name: Run tests and generate Allure report
+        run: mvn clean test allure:generate
 
-      # Generate Allure report
-      - name: Generate Allure report
-        run: mvn allure:report
-
-      - name: Upload Allure  Report
-        if: always()
+      - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report
-          path: target/site/allure-maven-plugin/
+              name: allure-report
+              path: target/allure-report
