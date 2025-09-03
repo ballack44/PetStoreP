@@ -158,13 +158,13 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>2.11.2</version>
+                <version>2.15.2</version>
                 <configuration>
                     <reportVersion>2.34.0</reportVersion>
                     <!-- Where Allure looks for raw results -->
-                    <resultsDirectory>target/allure-results</resultsDirectory>
+                    <resultsDirectory>allure-results</resultsDirectory>
                     <!-- Where the report will be generated -->
-                    <reportDirectory>target/allure-report</reportDirectory>
+                    <reportDirectory>allure-report</reportDirectory>
                 </configuration>
             </plugin>
 
