@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.*;
 @Slf4j
 @Epic("PetStore API Tests")
 @Feature("Pet CRUD Operations")
-public class PetCrudPositiveTest extends Endpoints {
+public class PetCrudPositiveTests extends Endpoints {
     
     private static String createdPetId;
 

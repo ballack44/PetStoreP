@@ -5,7 +5,7 @@
     </listeners>
     <test name="Pet CRUD Tests">
         <classes>
-            <class name="com.tj.petstore.PetCrudPositiveTest"/>
+            <class name="com.tj.petstore.PetCrudPositiveTests"/>
             <class name="com.tj.petstore.PetNegativeTests"/>
         </classes>
     </test>
